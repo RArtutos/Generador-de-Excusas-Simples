@@ -7,7 +7,7 @@ interface ExcuseButtonProps {
   onToggleSpeech: () => void;
 }
 
-export function ExcuseButton({ onGenerate, isSpeechEnabled, onToggleSpeech }: ExcuseButtonProps) {
+export function ExcuseButton({ onGenerate }: ExcuseButtonProps) {
   return (
     <div className="flex flex-col gap-4 items-center">
       <button
@@ -17,23 +17,6 @@ export function ExcuseButton({ onGenerate, isSpeechEnabled, onToggleSpeech }: Ex
         <Sparkles className="w-5 h-5" />
         <span>Generar Excusa</span>
         <div className="absolute inset-0 rounded-xl bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-      </button>
-      
-      <button
-        onClick={onToggleSpeech}
-        className="flex items-center gap-2 text-indigo-200 hover:text-white transition-colors"
-      >
-        {isSpeechEnabled ? (
-          <>
-            <Volume2 className="w-5 h-5" />
-            <span className="text-sm">Audio Activado</span>
-          </>
-        ) : (
-          <>
-            <VolumeX className="w-5 h-5" />
-            <span className="text-sm">Audio Desactivado</span>
-          </>
-        )}
       </button>
     </div>
   );
