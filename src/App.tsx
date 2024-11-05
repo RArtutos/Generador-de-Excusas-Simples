@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { ExcuseButton } from './components/ExcuseButton';
 import { ExcuseDisplay } from './components/ExcuseDisplay';
-import { excuses } from './data/excuses';
+import { generateExcuse } from './data/excuses';
 
 function App() {
   const [excuse, setExcuse] = useState("");
@@ -9,21 +9,14 @@ function App() {
   const [isSpeechEnabled, setIsSpeechEnabled] = useState(false);
 
   useEffect(() => {
-    // Set up speech synthesis with male voice
     if ('speechSynthesis' in window) {
       window.speechSynthesis.onvoiceschanged = () => {
         const voices = window.speechSynthesis.getVoices();
-    
-        // Intenta encontrar una voz masculina en español
         const spanishMaleVoice = voices.find(voice => 
           voice.lang.startsWith('es') && 
           (voice.name.toLowerCase().includes('male') || voice.name.toLowerCase().includes('hombre'))
         );
-    
-        // Si no hay voz masculina, selecciona cualquier voz en español
         const spanishVoice = spanishMaleVoice || voices.find(voice => voice.lang.startsWith('es'));
-    
-        // Asigna la voz seleccionada a una variable global
         if (spanishVoice) {
           window.spanishVoice = spanishVoice;
         }
@@ -31,9 +24,9 @@ function App() {
     }
   }, []);
 
-  const generateExcuse = useCallback(() => {
+  const generateNewExcuse = useCallback(() => {
     setIsAnimating(true);
-    const newExcuse = excuses[Math.floor(Math.random() * excuses.length)];
+    const newExcuse = generateExcuse();
     setExcuse(newExcuse);
 
     if (isSpeechEnabled && 'speechSynthesis' in window) {
@@ -65,7 +58,7 @@ function App() {
           Excusas Simples
         </h1>
         <ExcuseButton
-          onGenerate={generateExcuse}
+          onGenerate={generateNewExcuse}
           isSpeechEnabled={isSpeechEnabled}
           onToggleSpeech={toggleSpeech}
         />
